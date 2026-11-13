@@ -19,7 +19,7 @@
 import re
 
 # Configuração geral
-configfile: "config.yaml"
+configfile: "config/config.yaml"
 
 
 SAMPLES = config["samples"]
