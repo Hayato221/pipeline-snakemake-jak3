@@ -1,5 +1,6 @@
-# Relatórios MultiQC gerados automaticamente
-experiments/independent_seeds/**/multiqc_report.html linguist-generated
+# ============================================================
+# RELATÓRIOS EXPERIMENTAIS GERADOS AUTOMATICAMENTE
+# ============================================================
 
-# Resumos HTML gerados pelo Ensembl VEP
-experiments/independent_seeds/**/*.vep_summary.html linguist-generated
+# Relatórios HTML produzidos pelas ferramentas do pipeline
+experiments/independent_seeds/**/*.html linguist-generated
