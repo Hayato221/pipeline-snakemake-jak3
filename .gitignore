@@ -1,0 +1,73 @@
+#===============================================================
+# Pipeline de variantes genéticas - JAK3 (gitignore)
+#===============================================================
+
+# ============================================
+# Pastas de Execução e Resultados do Pipeline
+# ============================================
+/data/
+/intermediate/
+/results/
+/logs/
+/reference/
+
+
+# ==========================================
+# Arquivos de Sequenciamento e Alinhamento
+# ==========================================
+*.fq
+*.fq.gz
+*.fastq
+*.fastq.gz
+*.bam
+*.bai
+
+
+# ==========================================
+# Arquivos de Variantes e Anotação
+# ==========================================
+*.vcf.gz
+*.gtf.gz
+
+
+# ==========================================
+# Índices Genômicos e de Variantes
+# ==========================================
+*.amb
+*.ann
+*.bwt
+*.pac
+*.sa
+*.fai
+*.dict
+*.tbi
+
+
+# ==========================================
+# Arquivos e Ambientes do Snakemake/Conda
+# ==========================================
+/.snakemake/
+/.conda/
+
+
+# ==========================================
+# Arquivos Temporários de Editores
+# ==========================================
+*.swp
+*.swo
+*~
+
+
+# ==========================================
+# Arquivos de Sistemas Operacionais
+# ==========================================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ==========================================
+# Resultados experimentais versionados
+# ==========================================
+!experiments/independent_seeds/**/*.vcf.gz
+!experiments/independent_seeds/**/*.vcf.gz.tbi
+!experiments/independent_seeds/**/*.tbi
