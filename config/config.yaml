@@ -1,0 +1,61 @@
+#===============================================================
+# Pipeline de variantes genéticas - JAK3 (config.yaml)
+#===============================================================
+
+samples:
+  - wt  # Controle selvagem, sem a variante (genótipo 0/0)
+  - hom # Amostra homozigota para a variante (genótipo 1/1)
+  - het # Amostra heterozigota (genótipo 0/1), simulada pela combinação de reads dos alelos de referência e alternativo
+
+# Região genômica de interesse no cromossomo 19 (GRCh38).
+# Janela de 601 bp utilizada na chamada de variantes,
+# extração regional dos bancos e cálculo de profundidade.
+target_region: "chr19:17835701-17836301"
+
+simulation:
+  read_length: 150  # Comprimento individual de cada leitura simulada, em pares de bases (bp).
+
+  insert_mean: 300  # Tamanho médio dos fragmentos de DNA simulados para o sequenciamento paired-end, em bp.
+  insert_sd: 30     # Desvio padrão do tamanho dos fragmentos simulados, em bp.
+
+  coverage:
+    wt: 30   # Cobertura nominal solicitada para a amostra selvagem.
+    hom: 30  # Cobertura nominal solicitada para a amostra homozigota.
+    # Cobertura nominal de cada alelo da amostra heterozigota:
+    # 15x na referência + 15x no alelo alternativo.
+    # As leituras são posteriormente combinadas, totalizando 30x nominais.
+    het: 15
+
+  seeds:
+    wt: 100      # Semente fixa para a simulação da amostra selvagem.
+    hom: 200     # Semente fixa para a simulação da amostra homozigota.
+    het_ref: 300 # Semente fixa para a simulação do alelo de referência do heterozigoto.
+    het_mut: 400 # Semente fixa para a simulação do alelo alternativo do heterozigoto.
+
+fastp:
+  min_length: 35  # Comprimento mínimo das leituras após o processamento.
+                  # Leituras menores que esse valor serão descartadas.
+
+reference:
+  genome_assembly: "GRCh38"  # Montagem de referência utilizada no projeto.
+
+  fasta:
+    source: "UCSC"  # Fonte do genoma de referência (informativo).
+    url: "https://hgdownload.soe.ucsc.edu/goldenPath/hg38/chromosomes/chr19.fa.gz"
+
+  gtf:
+    source: "Ensembl"  # Fonte da anotação gênica (informativo).
+    release: "116"     # Versão da anotação Ensembl (informativo).
+    url: "https://ftp.ensembl.org/pub/release-116/gtf/homo_sapiens/Homo_sapiens.GRCh38.116.chr.gtf.gz"
+
+databases:
+  # Os arquivos devem corresponder à montagem GRCh38.
+  # Ao atualizar um banco, atualizar também sua versão e URL.
+
+  clinvar:
+    url: "https://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh38/archive_2.0/2026/clinvar_20261011.vcf.gz"
+    version: "20261011"  # Data da versão arquivada do ClinVar utilizada.
+
+  gnomad:
+    url: "https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr19.vcf.bgz"
+    version: "4.1.1"  # Versão do conjunto de dados gnomAD Exomes.

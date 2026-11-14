@@ -1,0 +1,47 @@
+samples:
+  - wt # Amostra controle selvagem (0/0)
+  - hom # Amostra homozigota para a variante (1/1)
+  - het # Amostra heterozigota para a variante (0/1), simulada combinando leituras das duas referências
+
+target_region: "chr19:17835701-17836301" # Janela de 601 bp usada na chamada de variantes e no cálculo de profundidade
+
+simulation:
+  read_length: 150 # O comprimento das leituras a serem simuladas
+  insert_mean: 300 # O tamanho médio dos fragmentos de DNA/RNA para simulações de sequenciamento pareado
+  insert_sd: 30 # Desvio padrão do tamanho dos fragmentos de DNA/RNA para simulações de sequenciamento pareado
+
+  coverage:
+    wt: 10 # Cobertura de leitura a ser simulada
+    hom: 10
+    het: 5 # Amostras heterozigotas devem apresentar metade da cobertura na referência e metade no alelo mutante (5x + 5x), totalizando 10x de cobertura efetiva
+
+  seeds:
+    wt: 100 # Usar uma seed fixa para garantir reprodutibilidade
+    hom: 200
+    het_ref: 300
+    het_mut: 400
+
+fastp:
+  min_length: 35 # Leituras menores que o comprimento mínimo serão descartadas
+
+reference:
+  genome_assembly: "GRCh38"
+
+  fasta:
+    source: "UCSC" # Só para documentação
+    url: "https://hgdownload.soe.ucsc.edu/goldenPath/hg38/chromosomes/chr19.fa.gz"
+
+  gtf:
+    source: "Ensembl" # Só para documentação
+    release: "116" # Só para documentação
+    url: "https://ftp.ensembl.org/pub/release-116/gtf/homo_sapiens/Homo_sapiens.GRCh38.116.chr.gtf.gz"
+
+databases:
+# ATENÇÃO: A versão abaixo deve corresponder exatamente à data informada na URL do arquivo
+# Se atualizar a URL, atualize a versão junto.
+  clinvar:
+    url: "https://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh38/archive_2.0/2026/clinvar_20261011.vcf.gz"
+    version: "20261011"
+  gnomad:
+    url: "https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr19.vcf.bgz"
+    version: "4.1.1"

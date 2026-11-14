@@ -1,0 +1,8 @@
+channels:
+  - conda-forge
+  - bioconda
+
+dependencies:
+  - bcftools=1.24
+  - htslib=1.24
+  - curl=8.23.0
