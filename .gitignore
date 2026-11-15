@@ -72,3 +72,8 @@ desktop.ini
 experiments/**/*.html
 experiments/**/*.vcf.gz
 experiments/**/*.tbi
+
+# ==========================================
+# Metadados do Windows (WSL)
+# ==========================================
+*:Zone.Identifier
