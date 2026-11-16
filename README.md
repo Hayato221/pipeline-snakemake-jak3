@@ -90,7 +90,7 @@ A ausência de registro na posição-alvo no VCF não corresponde a uma chamada 
 
 O DP desta tabela é a profundidade usada pelo GATK na chamada (campo `DP` do VCF) e pode diferir em algumas reads da profundidade calculada pelo `samtools depth` nos gráficos; por exemplo, no HOM 30x são 17 reads no VCF e 18 no `samtools depth`.
 
-Os valores de GQ são apresentados como indicadores de confiança genotípica e não são utilizados como critérios de filtragem nesta versão. Embora a variante tenha sido chamada nos genótipos HOM e HET, a confiança das chamadas variou entre os níveis de cobertura, especialmente no HOM em 5x e 10x.
+Os valores de GQ são apresentados como indicadores de confiança genotípica e não são utilizados como critérios de filtragem nesta versão.
 
 Os arquivos de saída de cada experimento (TSVs anotados, `depth`, `flagstat`, `stats`, `markdup_metrics` e `config.yaml`) estão em [`experiments/independent_seeds/`](experiments/independent_seeds/), nas pastas `coverage_5x`, `coverage_10x` e `coverage_30x`.
 
@@ -152,8 +152,6 @@ Troque `coverage_5x` por `coverage_10x` ou `coverage_30x` conforme o experimento
 
 Na primeira execução, o Snakemake cria automaticamente os ambientes Conda definidos nos arquivos de `envs/`. O workflow também baixa a referência FASTA do cromossomo 19 da UCSC, o GTF do Ensembl 116 e extrai as regiões correspondentes dos bancos ClinVar e gnomAD indicados no `config/config.yaml` [10, 24–26]. Esses arquivos são armazenados em `reference/`, diretório gerado localmente e não versionado no Git.
 
-O parâmetro `--cores 1` é uma opção conservadora para computadores com recursos limitados.
-
 <a name="5-arquitetura-do-pipeline"></a>
 ## 🏗️ 5. Arquitetura do pipeline
 
@@ -213,7 +211,6 @@ Os diretórios `data/`, `intermediate/`, `reference/`, `results/` e os logs de e
 - Conda ou Mamba instalado e inicializado no terminal.
 - Snakemake 9.25.1, instalado no ambiente utilizado para executar o workflow [23].
 - Conexão com a internet na primeira execução para criação dos ambientes Conda e obtenção das referências e bancos de anotação.
-- Espaço em disco disponível para os FASTQ, BAM, VCF e demais arquivos intermediários gerados durante a execução.
 
 ### Ferramentas de bioinformática
 
@@ -239,7 +236,7 @@ As ferramentas são instaladas automaticamente em ambientes Conda separados, def
 - ClinVar: versão arquivada de 11/10/2026 [26].
 - gnomAD Exomes: versão 4.1.1 [10].
 
-O consumo de memória e armazenamento depende da cobertura configurada e dos arquivos intermediários gerados. Em computadores com recursos limitados, recomenda-se iniciar a execução com `--cores 1`.
+O consumo de memória e a necessidade de espaço em disco variam conforme a cobertura configurada e a quantidade de arquivos intermediários gerados. Em computadores com recursos limitados, recomenda-se iniciar a execução com `--cores 1` e reservar espaço suficiente para os arquivos FASTQ, BAM, VCF e demais saídas do workflow.
 
 <a name="8-limitacoes-e-proximas-etapas"></a>
 ## 🚧 8. Limitações e próximas etapas
@@ -253,12 +250,13 @@ O consumo de memória e armazenamento depende da cobertura configurada e dos arq
 
 **Próximas etapas:**
 
+- Implementar o gerenciamento de memória por regra (`mem_mb`), definindo estimativas de memória (em MB) para as diferentes etapas do pipeline.
 - Repetir a simulação com a mesma *seed* para WT, HOM e HET, para verificar se a diferença de profundidade observada na janela de 601 bp decorre da variação aleatória entre as simulações.
 - Repetir as simulações com múltiplas *seeds* e mais níveis de cobertura, para estimar a cobertura mínima em que a variante é recuperada de forma consistente.
 - Simular também o alelo `G>T` (*p.Arg613=*), do mesmo identificador `rs149316157`, para verificar se o pipeline diferencia os dois alelos.
 - Comparar a genotipagem individual com o *joint calling* entre WT, HOM e HET, avaliando o efeito sobre as chamadas, inclusive o registro explícito do genótipo 0/0 do WT na posição-alvo.
 - Padronizar os critérios de inclusão e exclusão de reads no cálculo da cobertura regional e global, para que as métricas sejam diretamente comparáveis.
-- Gerar a tabela-resumo das chamadas com *pandas*, lendo automaticamente os TSVs anotados e as métricas de cobertura, em vez de transcrever os valores manualmente.
+- Gerar a tabela-resumo das chamadas com `pandas`, lendo automaticamente os TSVs anotados e as métricas de cobertura, em vez de transcrever os valores manualmente.
 - Validar automaticamente o arquivo de configuração antes da execução (campos obrigatórios, tipos e intervalos de valores).
 - Verificar previamente os arquivos de entrada (existência, conteúdo e concordância do alelo de referência do VCF com o FASTA).
 - Criar testes automatizados para as etapas principais do workflow.
