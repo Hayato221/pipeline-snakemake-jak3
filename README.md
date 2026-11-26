@@ -152,10 +152,12 @@ snakemake --cores 1 --sdm conda
 
 ### Utilizar outra configuração de cobertura
 
-Para verificar o planejamento do experimento 5x sem executar as tarefas:
+Para conferir o planejamento do experimento e visualizar os comandos que serão executados pelo ART Illumina, incluindo os parâmetros de cobertura, utilize `--dry-run` junto com `--printshellcmds`.
+
+Por exemplo, para verificar o experimento 5x sem executar as tarefas:
 
 ```bash
-snakemake --dry-run --cores 1 --sdm conda \
+snakemake --dry-run --printshellcmds --cores 1 --sdm conda \
   --configfile experiments/independent_seeds/coverage_5x/config.yaml
 ```
 
